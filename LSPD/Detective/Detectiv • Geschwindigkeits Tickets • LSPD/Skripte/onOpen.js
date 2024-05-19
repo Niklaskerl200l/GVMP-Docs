@@ -1,0 +1,4 @@
+function onOpen()
+{
+  LSPD.onOpen();  
+}

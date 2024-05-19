@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <base target="_top">
+    <script>
+        function HTML_DB_Vorladung_Beenden()
+        {
+            google.script.host.close();
+        }
+
+        function HTML_DB_Vorladung_Finish()
+        {
+            var Anrede = document.getElementById("Anrede").options[document.getElementById("Anrede").selectedIndex].text;
+            var TVO = document.getElementById("TVO").options[document.getElementById("TVO").selectedIndex].text;
+            var Art = document.getElementById("Terminart").options[document.getElementById("Terminart").selectedIndex].text;
+
+            var Datum = document.getElementById("Datum").value;
+            var Uhrzeit = document.getElementById("Uhrzeit").value;
+
+            var Dauer = document.getElementById("Dauer").value;
+
+            google.script.run.withSuccessHandler(HTML_DB_Vorladung_Beenden).GS_DB_Vorladung_Finish(Anrede, TVO, Datum, Uhrzeit, Dauer, Art);
+        }
+
+        function HTML_DB_Vorladung_SetDaten(Daten)
+        {
+            var Dropdown_Anrede = document.getElementById("Anrede");
+
+            var Option_Herr = document.createElement("option");
+            Option_Herr.text = "geehrter Herr";
+
+            var Option_Dame = document.createElement("option");
+            Option_Dame.text = "geehrte Frau";
+
+            Dropdown_Anrede.add(Option_Herr);
+            Dropdown_Anrede.add(Option_Dame);
+
+            var Dropdown_Terminart = document.getElementById("Terminart");
+
+            var Option_Vorladung = document.createElement("option");
+            Option_Vorladung.text = "Vorladung";
+
+            var Option_Personalgespraech = document.createElement("option");
+            Option_Personalgespraech.text = "Personalgespräch";
+
+            var Option_Zeugenaussage = document.createElement("option");
+            Option_Zeugenaussage.text = "Zeugenaussage";
+
+            Dropdown_Terminart.add(Option_Vorladung);
+            Dropdown_Terminart.add(Option_Personalgespraech);
+            Dropdown_Terminart.add(Option_Zeugenaussage);
+
+            var Dropdown_TVOs = document.getElementById("TVO");
+
+            for(var i = 0; i < Daten.length; i++)
+            {
+                var option = document.createElement("option");
+                option.text = Daten[i];
+
+                Dropdown_TVOs.add(option);
+            }
+        }
+
+        google.script.run.withSuccessHandler(HTML_DB_Vorladung_SetDaten).GS_DB_Vorladung_SetDaten();
+    </script>
+    <body style="font-family: 'Roboto', sans-serif; background-color: #13181f;">
+        <h1 align="center" style="color: white; font-size: 50px; font-weight: 900;">DB-Postservice</h1>
+        <table align="center" style="text-align: center;">
+            <tr>
+                <th colspan="4"></th>
+            </tr>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 175px; background-color: #26282a;">Anrede</th>
+                <th style="width: 175px; background-color: #26282a;">Betroff. Officer</th>
+                <th style="width: 50px;"></th>
+            </tr>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 175px; background-color: #39434d;"><select id="Anrede" style="background-color: #39434d; width: 175px; text-align: center;"></select></th>
+                <th style="width: 175px; background-color: #39434d;"><select id="TVO" style="background-color: #39434d; width: 175px; text-align: center;"></select></th>
+                <th style="width: 50px;"></th>
+            </tr>
+            <tr>
+                <th colspan="4"></th>
+            </tr>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 175px; background-color: #26282a;">Datum des Termines</th>
+                <th style="width: 175px; background-color: #26282a;">Uhrzeit des Termines</th>
+                <th style="width: 50px;"></th>
+            </tr>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 175px; background-color: #39434d;"><input id="Datum" type="date" style="background-color: #39434d; width: 175px; text-align: center;"></th>
+                <th style="width: 175px; background-color: #39434d;"><input id="Uhrzeit" type="time" style="background-color: #39434d; width: 175px; text-align: center;"></th>
+                <th style="width: 50px;"></th>
+            </tr>
+            <tr>
+                <th colspan="4"></th>
+            </tr>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 175px; background-color: #26282a;" align="center">Dauer des Termines</th>
+                <th style="width: 175px; background-color: #26282a;" align="center">Terminart</th>
+                <th style="width: 50px;"></th>
+            </tr>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 175px; background-color: #39434d;" align="center"><input max="02:00" id="Dauer" type="time" style="background-color: #39434d; width: 175px; text-align: center;"></th>
+                <th style="width: 175px; background-color: #39434d;"><select id="Terminart" style="background-color: #39434d; width: 175px; text-align: center;"></select></th>
+                <th style="width: 50px;"></th>
+            </tr>
+        </table>
+        <table align="center" style="text-align: center;">
+            <tr>
+                <th colspan="4"></th>
+            </tr>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th><button style="background-color: #1d5a3f; height: 42px; width: 175px; font-weight: bold;" type="button" onclick="HTML_DB_Vorladung_Finish()">Bestätigen</button></th>
+                <th><button style="background-color: #7b1a22; height: 42px; width: 175px; font-weight: bold;" type="button" onclick="HTML_DB_Vorladung_Beenden()">Abbrechen</button></th>
+                <th style="width: 50px;"></th>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -1,6 +1,6 @@
 function Eingabe_Test(Array_Mails)
 {  
-  var Array_Mails = ["gvmp.lspd.bot@gmail.com","niklaskerl2001@gmail.com","bmfaith31@gmail.com"];
+  var Array_Mails = ["gvmp.lspd.bot@gmail.com","1@1.com","bmfaith31@gmail.com"];
   
   try
   {

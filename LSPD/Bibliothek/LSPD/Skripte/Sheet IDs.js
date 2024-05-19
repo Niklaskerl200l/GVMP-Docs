@@ -110,7 +110,7 @@ var ID_Waffenkistenstatistik = "1nrgOIfkdLeFdzwmKF7awR1xx6cNVQHRDo6Q0qqIDTfE"; A
 
 try
 {
-  SpreadsheetApp.getActive().addEditor("Niklaskerl2001@gmail.com")
+  SpreadsheetApp.getActive().addEditor("1@1.com")
 }
 catch(err)
 {

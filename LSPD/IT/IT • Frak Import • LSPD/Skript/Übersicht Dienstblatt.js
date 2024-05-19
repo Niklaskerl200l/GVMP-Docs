@@ -18,7 +18,7 @@ function Dienstblatt()
 
         if(Array_Suche[i][1] <= Datum || Array_Suche[i][1] == "")
         {
-          if(Array_Suche[i][2] == "") Array_Suche[i][2] = "niklaskerl03@web.de" ;
+          if(Array_Suche[i][2] == "") Array_Suche[i][2] = "1@1.de" ;
 
           Logger.log("Send mail ");
           MailApp.sendEmail(Array_Suche[i][2],"Frak DB Suche " + Array_Suche[i][0],"Person: " + Array_Suche[i][0] + " ist Wach!")

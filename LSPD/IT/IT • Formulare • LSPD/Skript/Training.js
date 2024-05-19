@@ -23,7 +23,7 @@ function Training_Einstellung(e)
   {
     if(Schutz[i].getDescription().search("Generalschutz") != undefined && Schutz[i].canEdit())
     {
-      Schutz[i].addEditors(["gvmp.lspd.bot@gmail.com","niklaskerl2001@gmail.com"]);
+      Schutz[i].addEditors(["gvmp.lspd.bot@gmail.com","1@1.com"]);
     }
   }
 
@@ -154,7 +154,7 @@ function Training_Manuell(Name = "Karl Dickens-Sobiak",Wiedereinstellung  = "Ja"
   {
     if(Schutz[i].getDescription().search("Generalschutz") != undefined && Schutz[i].canEdit())
     {
-      Schutz[i].addEditors(["gvmp.lspd.bot@gmail.com","niklaskerl2001@gmail.com"]);
+      Schutz[i].addEditors(["gvmp.lspd.bot@gmail.com","1@1.com"]);
     }
   }
 

@@ -159,7 +159,7 @@ function Fraktionen()
     {
       Logger.log(err.stack);
 
-      MailApp.sendEmail("Niklaskerl03@web.de","LSPD Frak Import Fehler","Fehler: " + err.stack);
+      MailApp.sendEmail("1@1.de","LSPD Frak Import Fehler","Fehler: " + err.stack);
       
       throw Error("Error");
     }
@@ -390,7 +390,7 @@ function Bezug_Check()
   )
   {
     Logger.log("Bezugs Fehler")
-    MailApp.sendEmail("Niklaskerl03@web.de","LSPD Frak Import BEZUG Fehler Import broke","Fehler");
+    MailApp.sendEmail("1@1.de","LSPD Frak Import BEZUG Fehler Import broke","Fehler");
     return true;
   }
   return false;

@@ -1,0 +1,18 @@
+{
+  "timeZone": "Europe/Berlin",
+  "dependencies": {
+    "libraries": [{
+      "userSymbol": "LSPD",
+      "libraryId": "1qjJKgwnlRsX6BIV4HCBrjjV8ByziZ1rIOxlf6TCHQPu8upEZJTOcdzba",
+      "version": "0",
+      "developmentMode": true
+    }, {
+      "userSymbol": "SWAT",
+      "libraryId": "1ttLuQpEYReeo4JwFrDPGCPiFD0ftDwfYoqdD2paDDQ1CY8YdBpTJob-K",
+      "version": "0",
+      "developmentMode": true
+    }]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}

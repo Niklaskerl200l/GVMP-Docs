@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write(decodeURIComponent('%3Cscript src="js/jquery.min.js"%3E%3C/script%3E'))</script>
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.dark.css" />
+    <script src="https://cdn3.devexpress.com/jslib/20.2.5/js/dx.all.js"></script>
+</head>
+<style>
+  #chart
+  {
+    height: 470px;
+    width: 780px 
+  }
+
+  .nav-button
+  {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 2.4rem;
+    width: 2.8rem;
+    background-color: transparent;
+    background-image: linear-gradient(to right, currentColor, currentColor);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 5px;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: .25s cubic-bezier(.17,.67,.89,1.4);
+    transition-property: transform;
+    will-change: transform;
+  }
+
+  .nav-button::before,
+  .nav-button::after
+  {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    display: block;
+    height: 5px;
+    background: currentColor;
+    transition: .25s;
+    transition-property: transform, top;
+    will-change: transform, top;
+  }
+
+  .nav-button::before
+  {
+    top: 0;
+  }
+
+  .nav-button::after
+  {
+    top: calc(100% - 4px);
+  }
+
+  .back:focus::before 
+  {
+    width: 60%;
+    transform: rotate(-45deg) translate3d(-48%, 0, 0);
+  }
+
+  .back:focus::after 
+  {
+    width: 60%;
+    transform: rotate(45deg) translate3d(-48%, 0, 0);
+  }
+</style>
+<script>
+var dataSource = [];
+
+function Get_Bewerber(Array_Bewerber)
+{
+  dataSource = [];
+
+  for(var i = 0; i < Array_Bewerber.length; i++)
+  {
+    var Obj = new Object;
+
+    Obj.Bewerber = Array_Bewerber[i][0];
+    Obj.Zugestimmt = Array_Bewerber[i][1];
+    Obj.Abgelehnt = Array_Bewerber[i][2];
+    Obj.Enthalten = Array_Bewerber[i][3];
+
+    dataSource.push(Obj);
+  }
+}
+
+function Test()
+{
+  google.script.run.withSuccessHandler(Get_Bewerber).Get_Bewerber_Array_Abteilung();
+
+  $(function()
+  {
+    $("#chart").dxChart
+    (
+      {
+        dataSource: dataSource,
+        commonSeriesSettings: 
+        {
+          argumentField: "Bewerber",
+          type: "bar",
+          hoverMode: "none",
+          label: 
+          {
+            visible: true,
+            position: "Outside",
+            format: 
+            {
+              type: "fixedPoint",
+              precision: 0
+            }
+          }
+        },
+        series: 
+        [
+          { valueField: "Zugestimmt", name: "Zugestimmt" },
+          { valueField: "Abgelehnt", name: "Abgelehnt" },
+          { valueField: "Enthalten", name: "Enthalten" }
+        ],
+        legend: 
+        {
+          verticalAlignment: "bottom",
+          horizontalAlignment: "center"
+        }
+      }
+    );
+  });
+}
+
+  setInterval(Test,1000);
+</script>
+<body class="dx-viewport">
+  
+  <section>
+    <button onclick="google.script.run.withSuccessHandler().Start_Abstimmung_Abteilung()" class="nav-button back" type="button" id="toggle-button" aria-label="open/close navigation"></button>
+  </section>
+
+  <h1 style="text-align:center; margin-top: 0px; margin-bottom: 0px; color:white; font-size:50px; font-weight: 900;">Ergebnis</h1>
+      
+  <div id="chart" style="z-index: 1; position: absolute;"></div>
+
+      
+
+    
+</body>
+</html>

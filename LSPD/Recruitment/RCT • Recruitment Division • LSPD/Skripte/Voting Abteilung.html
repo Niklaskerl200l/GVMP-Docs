@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    
+  </body>
+</html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+
+  <style>
+    .button
+    {
+      background-color: #353535;
+      border-radius: 10px;
+      width:100%;
+      height:100%;
+      font-size:24px;
+      font-weight: 600;
+      color: white;
+      border: 0;
+      outline: 0;
+    }
+
+    .button:hover
+    {
+      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+      background-color: #565656;
+    }
+
+    .button span 
+    {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button span:after
+    {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .button:hover span
+    {
+      padding-right: 25px;
+    }
+
+    .button:hover span:after
+    {
+      opacity: 1;
+      right: 0;
+    }
+
+    .button:active
+    {
+      background-color: #3e8e41;
+      box-shadow: 0 5px #666;
+      transform: translateY(4px);
+    }
+
+    .head
+    {
+      text-align: center;
+      font-weight: bold;
+      background-color: #181818;
+      color: #f3f3f3;
+      padding-top: 0px;
+      padding-left: 0px;
+      padding-bottom:0px;
+      padding-right: 0px;
+    }
+
+  .nav-button
+  {
+    position: absolute;
+    top: 22px;
+    left: 20px;
+    height: 2.4rem;
+    width: 2.8rem;
+    background-color: transparent;
+    background-image: linear-gradient(to right, currentColor, currentColor);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 5px;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: .25s cubic-bezier(.17,.67,.89,1.4);
+    transition-property: transform;
+    will-change: transform;
+  }
+
+  .nav-button::before,
+  .nav-button::after
+  {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    display: block;
+    height: 5px;
+    background: currentColor;
+    transition: .25s;
+    transition-property: transform, top;
+    will-change: transform, top;
+  }
+
+  .nav-button::before
+  {
+    top: 0;
+  }
+
+  .nav-button::after
+  {
+    top: calc(100% - 4px);
+  }
+
+  .back:focus::before 
+  {
+    width: 60%;
+    transform: rotate(-45deg) translate3d(-48%, 0, 0);
+  }
+
+  .back:focus::after 
+  {
+    width: 60%;
+    transform: rotate(45deg) translate3d(-48%, 0, 0);
+  }
+  </style>
+  <script>
+    var Bewerber_Name = localStorage.getItem('Ausgewählter_Bewerber');
+
+    function Check_Status(Status)
+    {
+      google.script.run.withSuccessHandler(Set_Link).Get_Bewerber_Link_Abteilung(Bewerber_Name);
+
+      function Set_Link(Link)
+      {
+        var Tabelle = document.getElementById('Tabele_Button');
+
+        var Reihe = Tabelle.insertRow(0);
+
+        Zelle = Reihe.insertCell();
+        if(Link == "")
+        {
+          Zelle.innerHTML = '<h1 id="Bewerber" align="center" style="color:white; font-size:50px; font-weight: 900; margin-top: 0; margin-bottom: 10px;"> ' + Bewerber_Name + ' </h1>';
+        }
+        else
+        {
+          Zelle.innerHTML = '<h1 id="Bewerber" align="center" style="color:white; font-size:50px; font-weight: 900; margin-top: 0; margin-bottom: 10px;"><a href="'+Link+'" target="_blank" style="color: white;"> ' + Bewerber_Name + ' </a></h1>';
+        }
+        
+        Zelle.colSpan = "7";      
+
+        google.script.run.withSuccessHandler(Get_Status_Abstimmung).Get_Bewerber_Status_Abteilung(Bewerber_Name,"Abstimmung");
+
+        function Get_Status_Abstimmung(Status_Abstimmung)
+        {
+          if(Status_Abstimmung == true)
+          {
+            if(Status == "Nein")
+            {
+              Reihe = Tabelle.insertRow(1);
+              Reihe.style = "height: 50px";
+
+              Zelle = Reihe.insertCell();
+              Zelle.style = "width:5%;  height:100%";
+
+              Zelle = Reihe.insertCell();
+              Zelle.innerHTML = '<button id="Dafür" style="background-color:#38761d" onClick="Voten(this.id)" class="button">Dafür</button>';
+              Zelle.style = "width:26%; height:100%";
+
+              Zelle = Reihe.insertCell();
+              Zelle.style = "width:5%;  height:100%";
+
+              Zelle = Reihe.insertCell();
+              Zelle.innerHTML = '<button id="Dagegen" style="background-color:#990000" onClick="Voten(this.id)" class="button">Dagegen</button>';
+              Zelle.style = "width:26%; height:100%";
+
+              Zelle = Reihe.insertCell();
+              Zelle.style = "width:5%;  height:100%";
+
+              Zelle = Reihe.insertCell();
+              Zelle.innerHTML = '<button id="Enthalten" style="background-color:#999999" onClick="Voten(this.id)" class="button">Enthalten</button>';
+              Zelle.style = "width:26%; height:100%";
+
+              Zelle = Reihe.insertCell();
+              Zelle.style = "width:5%;  height:100%";
+            }
+            else
+            {
+              Reihe = Tabelle.insertRow(1);
+              Reihe.style = "height: 50px";
+
+              Zelle = Reihe.insertCell();
+              
+              if(Status == "Dafür")
+              {
+                Zelle.innerHTML = '<button style="background-color:#38761d;" class="button">Dafür</button>';
+              }
+              else if (Status == "Dagegen")
+              {
+                Zelle.innerHTML = '<button style="background-color:#990000;" class="button">Dagegen</button>';
+              }
+              else if (Status == "Enthalten")
+              {
+                Zelle.innerHTML = '<button style="background-color:#999999;" class="button">Enthalten</button>';
+              }
+              else
+              {
+                console.log(Status);
+              }
+
+              Zelle.style = "width:100%;  height:100%";
+              Zelle.colSpan = "7";
+            }
+          }
+
+          google.script.run.withSuccessHandler(Array_Bewerber_Bewertung).Get_Bewerber_Bewertung_Abteilung(Bewerber_Name);
+        }
+      }
+    }
+
+
+    function Array_Bewerber_Bewertung(Array_Bewerber_Bewertung)
+    {
+      google.script.run.withSuccessHandler(Get_Status_Bemerkung).Get_Bewerber_Status_Abteilung(Bewerber_Name,"Bemerkung");
+
+      function Get_Status_Bemerkung(Status_Bemerkung)
+      {
+        var Tabelle = document.getElementById('Tabelle_Bewertung');
+
+        Reihe = Tabelle.insertRow(0);
+        Reihe.className = "head";
+
+        Zelle = Reihe.insertCell();
+        Zelle.innerHTML = "Datum";
+        Zelle.style = "width:20%;  height:100%";
+        Zelle.className = "head";
+
+        Zelle = Reihe.insertCell();
+        Zelle.innerHTML = "Meinung";
+        Zelle.style = "width:50%;  height:100%";
+        Zelle.className = "head";
+
+        Zelle = Reihe.insertCell();
+        Zelle.innerHTML = "Beamter";
+        Zelle.style = "width:30%;  height:100%";
+        Zelle.className = "head";
+
+        if(Status_Bemerkung == true)
+        {
+          var Add = 1;
+        }
+        else
+        {
+          var Add = 0;
+        }
+
+        var y = 0;
+
+        for(var y2 = 0; y2 < Array_Bewerber_Bewertung.length + Add; y2++)
+        {
+          if(y2 == 0 && Status_Bemerkung == true)
+          {
+            var Reihe = Tabelle.insertRow(y2 + 1);
+
+            Zelle = Reihe.insertCell();
+            Zelle.innerHTML = '<input id="Input_Bemerkung" type="text" style="width: 100%; height: 30px; background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;border-top-width: 0px;border-top-style: solid;border-left-width: 0px;border-left-style: solid;border-bottom-width: 0px;border-bottom-style: solid;border-right-width: 0px;border-right-style: solid;">';
+            Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+            Zelle.colSpan = 2;
+
+            Zelle = Reihe.insertCell();
+            Zelle.innerHTML = '<img src="https://i.imgur.com/4SyFvWw.png" onClick="Set_Bemerkung()" width="30px" height="30px">';
+            Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+          }
+          else
+          {          
+            var Reihe = Tabelle.insertRow(y2 + 1);
+
+            if(y2 % 2 == 0)
+            {
+              for (var x = 0; x < Array_Bewerber_Bewertung[y].length; x++)
+              {
+                var Inhalt = Array_Bewerber_Bewertung[y][x];
+                
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = Inhalt;
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+            }
+            else
+            {
+              for (var x = 0; x < Array_Bewerber_Bewertung[y].length; x++)
+              {
+                var Inhalt = Array_Bewerber_Bewertung[y][x];
+                
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = Inhalt;
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+            }
+
+            y++;
+          }
+        }
+      }
+    }
+
+    function Set_Bemerkung()
+    {
+      google.script.run.withSuccessHandler().Set_Bewertung_Abteilung(Bewerber_Name,document.getElementById("Input_Bemerkung").value);
+
+      google.script.run.withSuccessHandler(Add_Zeile).Get_User_Abteilung();
+
+      function Add_Zeile(Beamter)
+      {
+        var Meinung = document.getElementById("Input_Bemerkung").value;
+
+        var Datum = new Date();
+
+        var Datum_Text = Datum.getDate() + "." + Datum.getMonth() + " " + Datum.getHours() + ":" + Datum.getMinutes();
+
+        var Tabelle = document.getElementById('Tabelle_Bewertung');
+        
+        var Letzte_Zeile = Tabelle.rows.length;
+
+        var Reihe = Tabelle.insertRow(Letzte_Zeile);
+
+        if(Letzte_Zeile % 2 == 1)
+        {          
+          Zelle = Reihe.insertCell();
+          Zelle.innerHTML = Datum_Text;
+          Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+          Zelle = Reihe.insertCell();
+          Zelle.innerHTML = Meinung;
+          Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+          Zelle = Reihe.insertCell();
+          Zelle.innerHTML = Beamter;
+          Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+        }
+        else
+        {
+          Zelle = Reihe.insertCell();
+          Zelle.innerHTML = Datum_Text;
+          Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+          Zelle = Reihe.insertCell();
+          Zelle.innerHTML = Meinung;
+          Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+          Zelle = Reihe.insertCell();
+          Zelle.innerHTML = Beamter;
+          Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+        }
+
+        document.getElementById("Input_Bemerkung").value = "";
+      }
+    }
+
+    function Voten(Status)
+    {
+      google.script.run.withSuccessHandler().Voting_Setzen_Abteilung(Bewerber_Name, Status);
+    }
+
+    google.script.run.withSuccessHandler(Check_Status).Get_Voting_Abteilung(Bewerber_Name);
+
+  </script>
+  </head>
+  <body style="background-color:#434343">
+
+    <section>
+      <button onclick="google.script.run.withSuccessHandler().Start_Abstimmung_Abteilung()" class="nav-button back" type="button" id="toggle-button"></button>
+    </section>
+
+    <table id="Tabele_Button" width="99%" align="center" valign="middle"> </table>
+
+    <br/>
+    <br/>
+
+    <table width="100%" align="center" id="Tabelle_Bewertung" style="background-color: #181818"> </table>
+
+  </body>
+</html>

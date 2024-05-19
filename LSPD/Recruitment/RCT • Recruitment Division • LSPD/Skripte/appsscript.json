@@ -1,0 +1,18 @@
+{
+  "timeZone": "Europe/Berlin",
+  "dependencies": {
+    "enabledAdvancedServices": [{
+      "userSymbol": "Sheets",
+      "serviceId": "sheets",
+      "version": "v4"
+    }],
+    "libraries": [{
+      "userSymbol": "LSPD",
+      "libraryId": "1qjJKgwnlRsX6BIV4HCBrjjV8ByziZ1rIOxlf6TCHQPu8upEZJTOcdzba",
+      "version": "0",
+      "developmentMode": true
+    }]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base target="_top">
+    <style>
+    .nav-button
+    {
+    position: absolute;
+    top: 22px;
+    left: 20px;
+    height: 2.4rem;
+    width: 2.8rem;
+    background-color: transparent;
+    background-image: linear-gradient(to right, currentColor, currentColor);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 5px;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: .25s cubic-bezier(.17,.67,.89,1.4);
+    transition-property: transform;
+    will-change: transform;
+  }
+
+  .nav-button::before,
+  .nav-button::after
+  {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    display: block;
+    height: 5px;
+    background: currentColor;
+    transition: .25s;
+    transition-property: transform, top;
+    will-change: transform, top;
+  }
+
+  .nav-button::before
+  {
+    top: 0;
+  }
+
+  .nav-button::after
+  {
+    top: calc(100% - 4px);
+  }
+
+  .back:focus::before 
+  {
+    width: 60%;
+    transform: rotate(-45deg) translate3d(-48%, 0, 0);
+  }
+
+  .back:focus::after 
+  {
+    width: 60%;
+    transform: rotate(45deg) translate3d(-48%, 0, 0);
+  }
+
+  .switch
+  {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  .switch input
+  { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider
+  {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before
+  {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider.groß:before
+  {
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    bottom: 6px;
+  }
+
+  input:checked + .slider
+  {
+    background-color: #2196F3;
+  }
+
+  input:focus + .slider
+  {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked + .slider:before
+  {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  input:checked + .slider.groß:before
+  {
+    -webkit-transform: translateX(34px);
+    -ms-transform: translateX(34px);
+    transform: translateX(34px);
+  }
+
+  .slider.round
+  {
+    border-radius: 34px;
+  }
+
+  .slider.round:before
+  {
+    border-radius: 50%;
+  }
+
+  .head
+  {
+    text-align: center;
+    font-weight: bold;
+    background-color: #181818;
+    color: #f3f3f3;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-bottom:0px;
+    padding-right: 0px;
+  }
+  </style>
+  <script>
+    function Tabelle_Laden(Array_Bewerber)
+    {
+      var Tabelle = document.getElementById('Tabelle');
+
+      var Reihe = Tabelle.insertRow(0);
+
+      Zelle = Reihe.insertCell();
+      Zelle.innerHTML = "Bewerber";
+      Zelle.style = "width: 22%; height: 100%;font-size: 28px;";
+      Zelle.className = "head";
+
+      Zelle = Reihe.insertCell();
+      Zelle.innerHTML = "Dafür";
+      Zelle.style = "width: 13%; height: 100%;font-size: 28px;";
+      Zelle.className = "head";
+
+      Zelle = Reihe.insertCell();
+      Zelle.innerHTML = "Dagegen";
+      Zelle.style = "width: 13%; height: 100%;font-size: 28px;";
+      Zelle.className = "head";
+
+      Zelle = Reihe.insertCell();
+      Zelle.innerHTML = "Enthalten";
+      Zelle.style = "width: 13%; height: 100%;font-size: 28px;";
+      Zelle.className = "head";
+
+      Zelle = Reihe.insertCell();
+      Zelle.innerHTML = "Bemerkung";
+      Zelle.style = "width: 13%; height: 100%;font-size: 24px;";
+      Zelle.className = "head";
+
+      Zelle = Reihe.insertCell();
+      Zelle.innerHTML = "Abstimmung";
+      Zelle.style = "width: 13%; height: 100%;font-size: 22px;";
+      Zelle.className = "head";
+
+      Zelle = Reihe.insertCell();
+      Zelle.innerHTML = "Löschen";
+      Zelle.style = "width: 13%; height: 100%;font-size: 26px;";
+      Zelle.className = "head";
+
+      var Add = 1;
+      var y = 0;
+
+      for(var y2 = 0; y2 < Array_Bewerber.length + Add; y2++)
+      {
+        var Reihe = Tabelle.insertRow(y2 + 1);
+        Reihe.style = "height: 40px";
+
+        if(y2 == 0)
+        {
+          Zelle = Reihe.insertCell();
+            Zelle.innerHTML = '<input id="Input_Name" type="text" style="width: 100%; height: 46px; background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;border-top-width: 0px;border-top-style: solid;border-left-width: 0px;border-left-style: solid;border-bottom-width: 0px;border-bottom-style: solid;border-right-width: 0px;border-right-style: solid;">';
+            Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+            Zelle.colSpan = 6;
+
+            Zelle = Reihe.insertCell();
+            Zelle.innerHTML = '<img src="https://i.imgur.com/4SyFvWw.png" onClick="Set_Neu_Bewerber()" width="40px" height="40px">';
+            Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+        }
+        else
+        {
+          if(y2 % 2 == 0)
+          {
+            for(var x = 0; x < Array_Bewerber[y].length; x++)
+            {
+              if(x == 4 && Array_Bewerber[y][x] == true)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Bemerkung\')" checked><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else if(x == 4 && Array_Bewerber[y][x] == false)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Bemerkung\')"><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else if(x == 5 && Array_Bewerber[y][x] == true)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Abstimmung\')" checked><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<img src="https://i.imgur.com/ONdBDRI.png" onClick="Entferne_Bewerber(\'' + Array_Bewerber[y][0] +'\')" width="100%" height="100%">'
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else if(x == 5 && Array_Bewerber[y][x] == false)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Abstimmung\')"><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<img src="https://i.imgur.com/ONdBDRI.png" onClick="Entferne_Bewerber(\'' + Array_Bewerber[y][0] +'\')" width="100%" height="100%">'
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = Array_Bewerber[y][x];
+                Zelle.style = "background-color: #353535; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+            }
+          }
+          else
+          {
+            for(var x = 0; x < Array_Bewerber[y].length; x++)
+            {
+              if(x == 4 && Array_Bewerber[y][x] == true)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Bemerkung\')" checked><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else if(x == 4 && Array_Bewerber[y][x] == false)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Bemerkung\')"><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else if(x == 5 && Array_Bewerber[y][x] == true)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Abstimmung\')" checked><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<img src="https://i.imgur.com/ONdBDRI.png" onClick="Entferne_Bewerber(\'' + Array_Bewerber[y][0] +'\')" width="100%" height="100%">'
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else if(x == 5 && Array_Bewerber[y][x] == false)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Abstimmung\')"><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<img src="https://i.imgur.com/ONdBDRI.png" onClick="Entferne_Bewerber(\'' + Array_Bewerber[y][0] +'\')" width="100%" height="100%">'
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else if(x == 6)
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = '<label class="switch"><input type="checkbox" value="' + Array_Bewerber[y][0] +'" onClick="Status(this.value, this.checked,\'Abstimmung\')"><span class="slider round"></span></label>'
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+              else
+              {
+                Zelle = Reihe.insertCell();
+                Zelle.innerHTML = Array_Bewerber[y][x];
+                Zelle.style = "background-color: #565656; color: #f3f3f3; text-align:center; padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;";
+              }
+            }
+          }
+          y++;
+        }
+      }
+    }
+
+    function Neu_Laden()
+    {
+      google.script.run.withSuccessHandler().Start_Settings_Abteilung();
+    }
+
+    function Set_Neu_Bewerber()
+    {
+      google.script.run.withSuccessHandler(Neu_Laden).Set_Neu_Bewerber_Abteilung(document.getElementById("Input_Name").value);
+
+      var ifrm = document.createElement("iframe");
+      ifrm.setAttribute("srcdoc",'<html style="width: 100%;height: 100%;"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>.loader {  border: 16px solid #f3f3f3;  border-radius: 50%;  border-top: 16px solid #3498db;  width: 120px;  height: 120px;  -webkit-animation: spin 2s linear infinite; /* Safari */  animation: spin 1.5s linear infinite;}/* Safari */@-webkit-keyframes spin {  0% { -webkit-transform: rotate(0deg); }  100% { -webkit-transform: rotate(360deg); }}@keyframes spin {  0% { transform: rotate(0deg); }  100% { transform: rotate(360deg); }}</style></head><body><div class="loader" style="top: 25%;position: absolute;left: 42%;"></div></body></html>');
+      ifrm.style = "position: absolute;   width: 100%; height: 86%; border: 0;top: 75px;left: 0px;";
+      document.body.appendChild(ifrm);
+    }
+
+    function Status(Bewerber, Wert, Art)
+    {
+      google.script.run.withSuccessHandler().Set_Bewerber_Status_Abteilung(Bewerber, Wert, Art);
+    }
+
+    function Entferne_Bewerber(Name)
+    {
+      google.script.run.withSuccessHandler(Neu_Laden).Entferne_Bewerber_Abteilung(Name);
+
+      var ifrm = document.createElement("iframe");
+      ifrm.setAttribute("srcdoc",'<html style="width: 100%;height: 100%;"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>.loader {  border: 16px solid #f3f3f3;  border-radius: 50%;  border-top: 16px solid #3498db;  width: 120px;  height: 120px;  -webkit-animation: spin 2s linear infinite; /* Safari */  animation: spin 2s linear infinite;}/* Safari */@-webkit-keyframes spin {  0% { -webkit-transform: rotate(0deg); }  100% { -webkit-transform: rotate(360deg); }}@keyframes spin {  0% { transform: rotate(0deg); }  100% { transform: rotate(360deg); }}</style></head><body><div class="loader" style="top: 25%;position: absolute;left: 42%;"></div></body></html>');
+      ifrm.style = "position: absolute;   width: 100%; height: 86%; border: 0;top: 75px;left: 0px;";
+      document.body.appendChild(ifrm);
+    }
+
+    function Relode(Array_Bewerber)
+    {
+      var Tabelle = document.getElementById("Tabelle");
+      var Ansicht = document.getElementById("CB_Ansicht").checked;
+
+      if(Ansicht == true)
+      {
+        Tabelle.style = "background-color: #181818; font-size: 16px;";
+        var Reihe = Tabelle.rows[0];
+
+        Reihe.cells[0].style = 'width: 15%; height: 100%; font-size: 28px;class="head';
+        Reihe.cells[1].style = 'width: 18%; height: 100%; font-size: 28px; class="head';
+        Reihe.cells[2].style = 'width: 19%; height: 100%; font-size: 28px; class="head';
+        Reihe.cells[3].style = 'width: 19%; height: 100%; font-size: 28px; class="head';
+        Reihe.cells[4].style = 'width: 8%; height: 100%; font-size: 15px;" class="head';
+        Reihe.cells[5].style = 'width: 8%; height: 100%; font-size: 15px;" class="head';
+        Reihe.cells[6].style = 'width: 13%; height: 100%; font-size: 26px;" class="head';
+      }
+      else if(Ansicht == false)
+      {
+        Tabelle.style = "background-color: #181818; font-size: 24px;";
+        var Reihe = Tabelle.rows[0];
+
+        Reihe.cells[0].style = 'width: 22%; height: 100%;font-size: 28px; class="head';
+        Reihe.cells[1].style = 'width: 13%; height: 100%;font-size: 28px; class="head';
+        Reihe.cells[2].style = 'width: 13%; height: 100%;font-size: 28px; class="head';
+        Reihe.cells[3].style = 'width: 13%; height: 100%;font-size: 28px; class="head';
+        Reihe.cells[4].style = 'width: 13%; height: 100%;font-size: 24px; class="head';
+        Reihe.cells[5].style = 'width: 13%; height: 100%;font-size: 22px; class="head';
+        Reihe.cells[6].style = 'width: 13%; height: 100%;font-size: 26px; class="head';
+      }
+
+      var y2 = 1;
+      console.log(Array_Bewerber);
+
+      for(var y = 0; y < Array_Bewerber.length; y++)
+      {
+        console.log(y);
+        var Reihe = Tabelle.rows[y2 + 1];
+
+        for(var x = 0; x < Array_Bewerber[y].length; x++)
+        {
+          if(x != 4 && x != 5)
+          {
+            if(x != 0 && Ansicht == true)
+            {
+              var Dummy = Array_Bewerber[y][x].toString().split("#_#");
+              var Zelle = Reihe.cells[x];
+              var Inhalt = "";
+              
+              for(var i = 0; i < Dummy.length; i++)
+              {
+                if(Dummy[i] != "")
+                {
+                  Inhalt = Inhalt + Dummy[i] + "<br/>";
+                }
+              }
+
+              Zelle.innerHTML = Inhalt;
+            }
+            else
+            {
+              var Zelle = Reihe.cells[x];
+              Zelle.innerHTML = Array_Bewerber[y][x];
+            }
+          }
+        }
+        y2++;
+      }
+    }
+
+    google.script.run.withSuccessHandler(Tabelle_Laden).Settings_Laden_Abteilung(false);
+  </script>
+  </head>
+  <body style="background-color:#434343">
+    <h1 style="text-align: center; color: white; font-size: 48px; margin-top: 12px; margin-bottom: 10px; padding-right: 120px;">Einstellungen</h1>
+    
+    <section>
+      <button onclick="google.script.run.withSuccessHandler().Start_Abstimmung_Abteilung()" class="nav-button back" type="button" id="toggle-button"></button>
+    </section>
+    <div style="position: absolute; right:20px; top: 22px">
+      <b style="font-size: 38px; position: absolute; right: 80px; color: white; top: -3px;">Ansicht</b>
+      <label class="switch" style="height:38px; width: 70px"><input type="checkbox" id="CB_Ansicht" onClick="google.script.run.withSuccessHandler(Relode).Settings_Laden_Abteilung(this.checked)"><span style="" class="slider groß round"></span></label>
+    </div>
+
+    <table width="100%" align="center" id="Tabelle" style="background-color: #181818; font-size: 24px;">
+
+    </table>
+
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html style="background-color:#434343">
+ <style>
+    .Border
+    {
+      border-left-width: 0px;
+      border-left-style: solid;
+      border-top-width: 0px;
+      border-top-style: solid;
+      border-right-width: 0px;
+      border-right-style: solid;
+      border-bottom-width: 0px;
+      border-bottom-style: solid;
+    }
+ </style>
+ <script>
+  function Abbrechen()
+  {
+    google.script.host.close();
+  }
+
+  function Eintragen()
+  {
+    var Datum = document.getElementById("Datum").options[document.getElementById("Datum").selectedIndex].text;
+    var Bewerber = document.getElementById("Name").innerHTML;
+
+    google.script.run.withSuccessHandler(Abbrechen).Academy_Eintragen(Datum,Bewerber);
+  }
+
+  function Bewerber(Name)
+  {
+    document.getElementById("Name").innerHTML = Name;
+  }
+
+  function Laden(Array)
+  {
+    var Dropdown_Academy = document.getElementById("Datum");
+    console.log(Array);
+    for(var i = 0; i < Array.length; i++)
+    {
+      var option = document.createElement("option");
+      option.text = Array[i];
+      Dropdown_Academy.add(option);
+    }
+
+    google.script.run.withSuccessHandler(Bewerber).Academy_Bewerber();
+  }
+
+   google.script.run.withSuccessHandler(Laden).Academy_Datum();
+ </script>
+  <body>
+    <table style="text-align:center">
+      <tr style="background-color:#434343; height:21px">
+        <th colspan="4"></th>
+      </tr>
+      <tr>
+        <th style="background-color:#434343; width:35px"/>
+        <th style="background-color:#000000; width:225px; color:#f3f3f3">Bewerber</th>
+        <th style="background-color:#000000; width:200px; color:#f3f3f3">Academy Termin</th>
+        <th style="background-color:#434343; width:35px"/>
+      </tr>
+      <tr>
+        <th style="background-color:#434343; width:35px"/>
+        <th style="background-color:#999999; width:225px" id="Name"></th>
+        <th style="background-color:#999999; width:200px"><select class="Border" style="background-color:#999999; width:200px; text-align:center" id="Datum"></select></th>
+        <th style="background-color:#434343; width:35px"/>
+      </tr>
+      <tr style="background-color:#434343; height:21px">
+        <th colspan="4"></th>
+      </tr>
+      <tr style="background-color:#434343; height:21px">
+        <th style="background-color:#434343; width:35px"/>
+        <th><button class="Border" style="background-color:#f44336; height: 63px; width:100%; font-size: 30px; font-weight: bold" type="button" onclick="Abbrechen()">Abbrechen</button></th>
+        <th><button class="Border" style="background-color:#4CAF50; height: 63px; width:100%; font-size: 30px; font-weight: bold" type="button" onclick="Eintragen()">Eintragen</button></th>
+        <th style="background-color:#434343; width:35px"/>
+      </tr>
+      <tr style="background-color:#434343; height:21px">
+        <th colspan="4"></th>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "timeZone": "Europe/Vienna",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "LSPD",
+        "libraryId": "1qjJKgwnlRsX6BIV4HCBrjjV8ByziZ1rIOxlf6TCHQPu8upEZJTOcdzba",
+        "version": "0",
+        "developmentMode": true
+      }
+    ]
+  }
+}

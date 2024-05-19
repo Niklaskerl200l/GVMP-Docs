@@ -1,0 +1,22 @@
+{
+  "timeZone": "Europe/Berlin",
+  "dependencies": {
+    "enabledAdvancedServices": [],
+    "libraries": [
+      {
+        "userSymbol": "LSPD",
+        "version": "0",
+        "libraryId": "1qjJKgwnlRsX6BIV4HCBrjjV8ByziZ1rIOxlf6TCHQPu8upEZJTOcdzba",
+        "developmentMode": true
+      }
+    ]
+  },
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/script.projects"
+  ],
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}

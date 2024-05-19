@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html style="background-color:#434343">
+ <style>
+    .Border
+    {
+      border-left-width: 0px;
+      border-left-style: solid;
+      border-top-width: 0px;
+      border-top-style: solid;
+      border-right-width: 0px;
+      border-right-style: solid;
+      border-bottom-width: 0px;
+      border-bottom-style: solid;
+    }
+ </style>
+ <script>
+    function Pruefung_Starten()
+    {
+      var RCT = document.getElementById("RCT").options[document.getElementById("RCT").selectedIndex].text;
+      var Pruefer1 = document.getElementById("Prüfer").options[document.getElementById("Prüfer").selectedIndex].text;
+      var Zeit = document.getElementById("Zeit").value;
+      var Versuche = document.getElementById("Versuche").options[document.getElementById("Versuche").selectedIndex].text;
+      var Pruefer2 = document.getElementById("Prüfer2").options[document.getElementById("Prüfer2").selectedIndex].text;
+      
+      google.script.run.withSuccessHandler(Abbrechen).LT(RCT,Pruefer1,Zeit,Versuche,Pruefer2);
+    }
+
+    function Abbrechen()
+    {
+      google.script.host.close();
+    }
+
+    function Daten_Laden(Array)
+    {
+      var Dropdown_RCT = document.getElementById("RCT");
+
+      for(var i = 0; i < Array.length; i++)
+      {
+        var option = document.createElement("option");
+        option.text = Array[i];
+        Dropdown_RCT.add(option);
+      }
+
+      google.script.run.withSuccessHandler(Pruefer_Laden).Pruefer_Alle();
+
+      function Pruefer_Laden(Array)
+      {
+        var Dropdown_Pruefer = document.getElementById("Prüfer");
+        var Dropdown_Pruefer2 = document.getElementById("Prüfer2");
+
+        var option = document.createElement("option");
+        option.text = "";
+        Dropdown_Pruefer.add(option);
+
+        var option = document.createElement("option");
+        option.text = "";
+        Dropdown_Pruefer2.add(option);
+
+        for(var i = 0; i < Array.length; i++)
+        {
+          var option = document.createElement("option");
+          option.text = Array[i];
+          Dropdown_Pruefer.add(option);
+        }
+
+        for(var i = 0; i < Array.length; i++)
+        {
+          var option = document.createElement("option");
+          option.text = Array[i];
+          Dropdown_Pruefer2.add(option);
+        }
+        
+        google.script.run.withSuccessHandler(Pruefer_Select).Email();
+
+        function Pruefer_Select(Name)
+        {
+          document.getElementById("Prüfer").value = Name;
+        }
+      }
+
+      var Zeit = new Date();
+      
+      var Tag;
+      var Monat;
+      var Stunde;
+      var Minute;
+
+      if(Zeit.getDate().toString().length == 1)
+      {Tag = "0" + Zeit.getDate()}
+      else {Tag = Zeit.getDate()}
+
+      if((Zeit.getMonth() + 1).toString().length == 1)
+      {Monat = "0" + (Zeit.getMonth() + 1)}
+      else {Monat = (Zeit.getMonth() + 1)}
+
+      if(Zeit.getHours().toString().length == 1)
+      {Stunde = "0" + Zeit.getHours()}
+      else {Stunde = Zeit.getHours()}
+
+      if(Zeit.getMinutes().toString().length == 1)
+      {Minute = "0" + Zeit.getMinutes()}
+      else {Minute = Zeit.getMinutes()}
+
+      document.getElementById("Zeit").value = Zeit.getDate() + "." + Monat + "." + Zeit.getFullYear() + " " + Zeit.getHours() + ":" + Zeit.getMinutes();
+    }
+
+  google.script.run.withSuccessHandler(Daten_Laden).RCT_Alle();
+  </script>
+  <body>
+    <table style="text-align:center">
+      <tr style="background-color:#434343; height:21px">
+        <th colspan="9"></th>
+      </tr>
+      <tr>
+        <th style="background-color:#434343; width:35px"/>
+        <th style="background-color:#666666; width:225px">RCT Auswählen</th>
+        <th style="background-color:#999999; width:200px; padding-right: 3px"><select class="Border" style="background-color:#999999; width:206px; text-align:center" id="RCT"></select></th>
+        <th style="background-color:#434343; width:50px"/>
+        <th style="background-color:#666666; width:130px">Versuch</th>
+        <th style="background-color:#434343; width:50px"/>
+        <th style="background-color:#666666; width:175px">Prüfer</th>
+        <th style="background-color:#999999; width:200px; padding-right: 3px"><select class="Border" style="background-color:#999999; width:200px; text-align:center" id="Prüfer"></select></th>
+        <th style="background-color:#434343; width:35px"/>
+      </tr>
+      <tr style="background-color:#434343; height:21px">
+        <th style="background-color:#434343; width:35px"/>
+        <th style="background-color:#666666; width:225px">Zeitpunkt der Prüfung</th>
+        <th style="background-color:#999999; width:200px"><input class="Border" style="background-color:#999999; width:200px; text-align:center" id="Zeit"></input></th>
+        <th style="background-color:#434343; width:50px"/>
+        <th style="background-color:#999999; width:130px; padding-right: 3px"><select class="Border" style="background-color:#999999; width:200px; text-align:center" id="Versuche"><option>1</option><option>2</option><option>3</option> </select></th>
+        <th style="background-color:#434343; width:50px"/>
+        <th style="background-color:#666666; width:175px">Sekundärer Prüfer</th>
+        <th style="background-color:#999999; width:200px; padding-right: 3px"><select class="Border" style="background-color:#999999; width:200px; text-align:center" id="Prüfer2"></select></th>
+        <th style="background-color:#434343; width:35px"/>
+      </tr>
+      <tr style="background-color:#434343; height:21px">
+        <th colspan="9"></th>
+      </tr>
+      <tr style="background-color:#434343; height:63px">
+        <th style="background-color:#434343"></th>
+        <th colspan="2"><button class="Border" style="background-color:#f44336; height: 63px; width:100%; font-size: 30px; font-weight: bold" type="button" onclick="Abbrechen()">Abbrechen</button></th>
+        <th style="background-color:#434343"></th>
+        <th style="background-color:#434343"></th>
+        <th style="background-color:#434343"></th>
+        <th colspan="2"><button class="Border" style="background-color:#4CAF50; height: 63px; width:100%; font-size: 30px; font-weight: bold" type="button" onclick="Pruefung_Starten()">Prüfung Starten</button></th>
+        <th style="background-color:#434343"></th>
+      </tr>
+    </table>
+   <br/>
+    
+  </body>
+</html>
